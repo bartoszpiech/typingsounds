@@ -37,6 +37,8 @@ class _GetchWindows:
 
 
 getch = _Getch()
+
+switches = 'nk_creams'
 while(1):
     char = getch()
     if ord(char) == 27:
@@ -49,6 +51,6 @@ while(1):
         char = 'enter'
     elif ord(char) == 32:
         char = 'space'
-    cmd = char + '.mp3'
+    cmd = switches + '/' + char + '.mp3'
     subprocess.Popen(['afplay', cmd])
     print(char)

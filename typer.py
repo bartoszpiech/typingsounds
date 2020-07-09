@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import subprocess
 
 class _Getch:
@@ -7,9 +8,7 @@ class _Getch:
             self.impl = _GetchUnix()
         except ImportError:
             self.impl = _GetchWindows()
-
     def __call__(self): return self.impl()
-
 
 class _GetchUnix:
     def __init__(self):
@@ -26,7 +25,6 @@ class _GetchUnix:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-
 class _GetchWindows:
     def __init__(self):
         import msvcrt
@@ -35,22 +33,15 @@ class _GetchWindows:
         import msvcrt
         return msvcrt.getch()
 
-
 getch = _Getch()
-
+special_chars = {127 : 'backspace', 13 : 'enter', 32 : 'space'}
 switches = 'nk_creams'
 while(1):
     char = getch()
     if ord(char) == 27:
         exit()
-    if ord(char) == 127:
-        char = 'backspace'
-    elif ord(char) == 13:
-        char = 'enter'
-    elif ord(char) == 13:
-        char = 'enter'
-    elif ord(char) == 32:
-        char = 'space'
+    elif ord(char) in special_chars:
+        char = special_chars[ord(char)]
     cmd = switches + '/' + char + '.mp3'
     subprocess.Popen(['afplay', cmd])
     print(char)
